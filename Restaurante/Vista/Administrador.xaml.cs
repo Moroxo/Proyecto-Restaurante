@@ -38,5 +38,10 @@ namespace Restaurante.Vista
         {
             VistaAdm.Content = new Vista.paginas_administrador.Adm_mesas();
         }
+
+        private void AdmProductos_Click(object sender, RoutedEventArgs e)
+        {
+            VistaAdm.Content = new Vista.paginas_administrador.Adm_Productos();
+        }
     }
 }

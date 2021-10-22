@@ -10,7 +10,7 @@
     <Grid>
         <Button Content="Crear" HorizontalAlignment="Left" Margin="45,40,0,0" VerticalAlignment="Top" Width="75" Name="btnCrear" Click="btnCrear_Click"/>
         <Button Content="Listar" HorizontalAlignment="Left" Margin="45,90,0,0" VerticalAlignment="Top" Width="75" Name="btnListar" Click="btnListar_Click"/>
-        <Button Content="Eliminar" HorizontalAlignment="Left" Margin="45,145,0,0" VerticalAlignment="Top" Width="75" Name="btnEliminar" Click="btnEliminar_Click" RenderTransformOrigin="0.333,1.25"/>
+        <Button Content="Eliminar" HorizontalAlignment="Left" Margin="45,133,0,0" VerticalAlignment="Top" Width="75" Name="btnEliminar" Click="btnEliminar_Click" RenderTransformOrigin="0.333,1.25"/>
         <DataGrid HorizontalAlignment="Left" Height="225" Margin="0,265,0,0" VerticalAlignment="Top" Width="965" Name="dgUsuarios" IsReadOnly="True"/>
         <TextBox HorizontalAlignment="Left" Name="eliminartxt" Height="35" Margin="175,145,0,0" TextWrapping="Wrap" Text="nombre de usuario a eliminar"  VerticalAlignment="Top" Width="135"  Visibility="Hidden"/>
         <Button Content="Confirmar" HorizontalAlignment="Left" Margin="175,210,0,0" VerticalAlignment="Top" Name="confirmar" Visibility="Hidden" Width="120" Click="confirmar_Click"/>
@@ -32,6 +32,6 @@
             <ComboBoxItem Name="_6" Content="Bodeguero" HorizontalAlignment="Left" Width="142" Foreground="White" Background="#FF5750F3"/>
         </ComboBox>
         <Button Content="confirmar" HorizontalAlignment="Left" Margin="720,193,0,0" VerticalAlignment="Top" Width="75" Name="Crear_confirmacion" Visibility="Hidden" Click="Crear_confirmacion_Click"/>
-
+        
     </Grid>
 </Page>
