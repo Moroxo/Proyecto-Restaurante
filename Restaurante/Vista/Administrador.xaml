@@ -14,7 +14,7 @@
         <StackPanel Orientation="Horizontal" Height="35" VerticalAlignment="Top" Grid.ColumnSpan="2">
             <Button Content="Administrar usuarios" Height="30" Name="AdmUsuario" Click="AdmUsuario_Click"/>
             <Button Content="Administrar mesas" Height="30" Name="AdmMesas" Click="AdmMesas_Click"/>
-            <Button Content="Administrar productos" Height="30" x:Name="AdmProductos" Click="AdmProductos_Click" Margin="0,2,0,3"/>
+            <Button Content="Administrar insumos" Height="30" x:Name="AdmInsumos" Click="AdmInsumos_Click" Margin="0,2,0,3"/>
         </StackPanel>
         <Frame x:Name="VistaAdm" Margin="0,35,0,0" Grid.ColumnSpan="2"></Frame>
     </Grid>

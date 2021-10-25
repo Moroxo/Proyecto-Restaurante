@@ -122,11 +122,11 @@
     <Compile Include="Vista\Cocinero.xaml.cs">
       <DependentUpon>Cocinero.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Vista\paginas-administrador\Adm-Insumos.xaml.cs">
+      <DependentUpon>Adm-Insumos.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vista\paginas-administrador\Adm-mesas.xaml.cs">
       <DependentUpon>Adm-mesas.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Vista\paginas-administrador\Adm-Productos.xaml.cs">
-      <DependentUpon>Adm-Productos.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vista\paginas-administrador\adm-usuario.xaml.cs">
       <DependentUpon>adm-usuario.xaml</DependentUpon>
@@ -158,11 +158,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Vista\paginas-administrador\Adm-mesas.xaml">
+    <Page Include="Vista\paginas-administrador\Adm-Insumos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Vista\paginas-administrador\Adm-Productos.xaml">
+    <Page Include="Vista\paginas-administrador\Adm-mesas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

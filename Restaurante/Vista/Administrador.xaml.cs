@@ -28,20 +28,21 @@ namespace Restaurante.Vista
         {
             InitializeComponent();
         }
-
+        //En la vista del administrador cada boton abre la pestaña correspondiente
+        //Este boton abre la pestaña de administrar los usuarios
         private void AdmUsuario_Click(object sender, RoutedEventArgs e)
         {
            VistaAdm.Content = new Vista.paginas_administrador.adm_usuario();
         }
-
+        //Este boton abre la pestaña de administrar los insumos
         private void AdmMesas_Click(object sender, RoutedEventArgs e)
         {
             VistaAdm.Content = new Vista.paginas_administrador.Adm_mesas();
         }
-
-        private void AdmProductos_Click(object sender, RoutedEventArgs e)
+        //Este boton abre la pestaña de administrar las mesas
+        private void AdmInsumos_Click(object sender, RoutedEventArgs e)
         {
-            VistaAdm.Content = new Vista.paginas_administrador.Adm_Productos();
+            VistaAdm.Content = new Vista.paginas_administrador.Adm_Insumos();
         }
     }
 }

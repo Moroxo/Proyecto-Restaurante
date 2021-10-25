@@ -24,7 +24,7 @@ namespace Restaurante
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        //entregamos los parametros de conexion
         String Conexion = "Data Source=localhost:1521/xe; password=123456; User id=RESTAURANT";
         OracleConnection cone = new OracleConnection();
         EntitiesRestaurant db = new EntitiesRestaurant();
@@ -33,19 +33,23 @@ namespace Restaurante
         {
             InitializeComponent();
         }
-
+        //funcion para realizar el login
         private void Entrar_Click(object sender, RoutedEventArgs e)
         {
+            //abrimos la conexion
             cone.ConnectionString = Conexion;
             cone.Open();
             String login = "";
+            //realizamos la consulta verificando que hayan datos correspondientes a los ingresados por el usuario
             String lector = "select id_tipo_usuario from usuario where nom_usuario = ('" + user.Text + "') and password = '" + password.Password.ToString()+ "'";
             OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
             DataTable dt = new DataTable();
             adaptador.Fill(dt);
+            //si la consulta devuelve 1 fila esto significa que los datos son correctos y podemos iniciar el loign
             if (dt.Rows.Count>0)
             {
                 login ="login exitoso";
+                //Estos if son para filtrar segun el tipo de usuario logeado al sistema y enviarlo a su vista correspondiente
                 if (dt.Rows[0]["id_tipo_usuario"].ToString().Equals("1"))
                 {
                     MessageBox.Show(login);

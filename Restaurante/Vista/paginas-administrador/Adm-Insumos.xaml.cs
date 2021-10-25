@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.OracleClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,58 +14,54 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Data.EntityClient;
-using System.Data.Objects;
-using System.Data;
-using System.Data.OracleClient;
-
 
 namespace Restaurante.Vista.paginas_administrador
 {
     /// <summary>
-    /// Lógica de interacción para adm_usuario.xaml
+    /// Lógica de interacción para Adm_Insumos.xaml
     /// </summary>
-    public partial class adm_usuario : Page
-    {
+    public partial class Adm_Insumos : Page
+    { 
+        //abrimos la conexion nuevamente
         String Conexion = "Data Source=localhost:1521/xe; password=123456; User id=RESTAURANT";
         OracleConnection cone = new OracleConnection();
         EntitiesRestaurant db = new EntitiesRestaurant();
-        public adm_usuario()
+        public Adm_Insumos()
         {
             InitializeComponent();
         }
-        //Esta funcion sirve para mostrar los controles necesarios para crear un nuevo usuario siendo administrador, solo cuando se desee crearlo
+        //Esta funcion sirve para mostrar los controles necesarios para crear un nuevo insumo siendo administrador, solo cuando se desee crearlo
         private void mostrarCrear()
         {
-            lblCorreo.Visibility = Visibility.Visible;
-            lblestado.Visibility = Visibility.Visible;
-            lblpass.Visibility = Visibility.Visible;
+            lblDescripcion.Visibility = Visibility.Visible;
+            lblinsumo.Visibility = Visibility.Visible;
+            lblprecio.Visibility = Visibility.Visible;
+            lblStock.Visibility = Visibility.Visible;
             lbltipo.Visibility = Visibility.Visible;
-            lblnomusuario.Visibility = Visibility.Visible;
-            txtCorreo.Visibility = Visibility.Visible;
-            txtEstado.Visibility = Visibility.Visible;
-            txtnomusuario.Visibility = Visibility.Visible;
-            pwboxpassword.Visibility = Visibility.Visible;
+            txtDescripcion.Visibility = Visibility.Visible;
+            txtinsumos.Visibility = Visibility.Visible;
+            txtPrecio.Visibility = Visibility.Visible;
+            txtStock.Visibility = Visibility.Visible;
             cbtipo.Visibility = Visibility.Visible;
             Crear_confirmacion.Visibility = Visibility.Visible;
         }
-        //Ocultamos los controles para crear un nuevo usuario en caso de no ser necesario su uso(al querer eliminar, listar o actualizar)
+        //Ocultamos los controles para crear un nuevo insumos en caso de no ser necesario su uso(al querer eliminar, listar o actualizar)
         private void ocultarCrear()
         {
 
-            lblCorreo.Visibility = Visibility.Hidden;
-            lblestado.Visibility = Visibility.Hidden;
-            lblpass.Visibility = Visibility.Hidden;
+            lblDescripcion.Visibility = Visibility.Hidden;
+            lblinsumo.Visibility = Visibility.Hidden;
+            lblprecio.Visibility = Visibility.Hidden;
             lbltipo.Visibility = Visibility.Hidden;
-            lblnomusuario.Visibility = Visibility.Hidden;
-            txtCorreo.Visibility = Visibility.Hidden;
-            txtEstado.Visibility = Visibility.Hidden;
-            txtnomusuario.Visibility = Visibility.Hidden;
-            pwboxpassword.Visibility = Visibility.Hidden;
+            lblStock.Visibility = Visibility.Hidden;
+            txtDescripcion.Visibility = Visibility.Hidden;
+            txtinsumos.Visibility = Visibility.Hidden;
+            txtPrecio.Visibility = Visibility.Hidden;
+            txtStock.Visibility = Visibility.Hidden;
             cbtipo.Visibility = Visibility.Hidden;
             Crear_confirmacion.Visibility = Visibility.Hidden;
         }
-        //Lo mismo de arriba, en este caso mostrando los controles al querer eliminar un usuario
+        //Lo mismo de arriba, en este caso mostrando los controles al querer eliminar un insumo
         private void mostrarEliminar()
         {
             eliminartxt.Visibility = Visibility.Visible;
@@ -75,8 +73,8 @@ namespace Restaurante.Vista.paginas_administrador
             eliminartxt.Visibility = Visibility.Hidden;
             confirmar.Visibility = Visibility.Hidden;
         }
-        //Segun el ComboItem elegido para el tipo de usuario, le entregaremos un valor entero para poder enviarlo a la base de datos
-        private int tipo_usuario()
+        //Segun el ComboItem elegido para el tipo de insumo, le entregaremos un valor entero para poder enviarlo a la base de datos
+        private int tipo_Insumo()
         {
             int tipo = 0;
             if (_1.IsSelected)
@@ -93,13 +91,13 @@ namespace Restaurante.Vista.paginas_administrador
                 tipo = 6;
             return tipo;
         }
-        //Cuando el administrador desee crear un nuevo usuario apareceran los controles necesarios
+        //Cuando el administrador desee crear un nuevo insumo apareceran los controles necesarios
         private void btnCrear_Click(object sender, RoutedEventArgs e)
         {
             mostrarCrear();
             ocultarEliminar();
         }
-        //Funcion para Listar o mostrar los datos que hay actualmente en usuarios
+        //Funcion para Listar o mostrar los datos que hay actualmente en insumos
         private void btnListar_Click(object sender, RoutedEventArgs e)
         {
             ocultarCrear();
@@ -107,14 +105,14 @@ namespace Restaurante.Vista.paginas_administrador
             cone.ConnectionString = Conexion;
             cone.Open();
             DataTable dt = new DataTable();
-            String lector = "select * from usuario";
+            String lector = "select * from Insumos";
             OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
             adaptador.Fill(dt);
-            dgUsuarios.ItemsSource = dt.AsDataView();
-            dgUsuarios.Items.Refresh();
+            dgInsumos.ItemsSource = dt.AsDataView();
+            dgInsumos.Items.Refresh();
             cone.Close();
         }
-        //Cuando el administrador desee eliminar un usuario apareceran los controles necesarios
+        //Cuando el administrador desee eliminar un insumo apareceran los controles necesarios
         private void btnEliminar_Click(object sender, RoutedEventArgs e)
         {
             mostrarEliminar();
@@ -128,31 +126,32 @@ namespace Restaurante.Vista.paginas_administrador
             //Se abre la conexion
             cone.ConnectionString = Conexion;
             cone.Open();
-            //Se envia el nombre del usuario a eliminar
-            String lector = "delete from usuario where nom_usuario ='" + eliminartxt.Text + "'";
+            //Se envia el nombre del insumo a eliminar
+            String lector = "delete from insumos where nom_insumo ='" + eliminartxt.Text + "'";
             OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
             cone.Close();
-            //cerramos la conexion y abrimos otra  mostrando los datos que quedan en la bd
+            //cerramos la conexion y abrimos otra mostrando los datos que quedan en la bd
             cone.Open();
             DataTable dt = new DataTable();
-            String lector2 = "select * from usuario";
+            String lector2 = "select * from insumos";
             OracleDataAdapter adaptador2 = new OracleDataAdapter(lector2, Conexion);
             adaptador.Fill(dt);
-            dgUsuarios.ItemsSource = dt.AsDataView();
-            dgUsuarios.Items.Refresh();
+            dgInsumos.ItemsSource = dt.AsDataView();
+            dgInsumos.Items.Refresh();
             cone.Close();
         }
         //El administrador confirma que desea crear y se realiza el proceso junto a la base de datos
         private void Crear_confirmacion_Click(object sender, RoutedEventArgs e)
         {
             //llamamos a la funcion antes mencionada para obtener que tipo de insumo es y le asignamos un valor local
-            int tipo = tipo_usuario();
+            int tipo = tipo_Insumo();
             //Abrimos la conexion con la bd
             cone.ConnectionString = Conexion;
             cone.Open();
             //Realizamos el insert con todos sus parametros necesarios
-            String lector = "insert into usuario (nom_usuario, password ,correo, estado, id_tipo_usuario) values ('" + txtnomusuario.Text + "','" + pwboxpassword.Password.ToString() + "','" + txtCorreo.Text + "', '" + txtEstado.Text + "'," + tipo + ")";
+            String lector = "insert into insumos (nom_insumo, precio_unitario, descripcion, stock, id_tipoinsumo) values ('" + txtinsumos.Text + "'," + txtPrecio.Text + ",'" + txtDescripcion.Text + "', " + txtStock.Text + "," + tipo + ")";
             OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
+            MessageBox.Show("Insert Ingresado correctamente");
             cone.Close();
             //Cerramos la conexion y abrimos otra para mostrar los datos en la base de datos
             cone.Open();
@@ -160,8 +159,8 @@ namespace Restaurante.Vista.paginas_administrador
             String lector2 = "select * from usuario";
             OracleDataAdapter adaptador2 = new OracleDataAdapter(lector2, Conexion);
             adaptador.Fill(dt);
-            dgUsuarios.ItemsSource = dt.AsDataView();
-            dgUsuarios.Items.Refresh();
+            dgInsumos.ItemsSource = dt.AsDataView();
+            dgInsumos.Items.Refresh();
             cone.Close();
         }
     }
