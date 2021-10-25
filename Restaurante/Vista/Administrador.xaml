@@ -12,9 +12,11 @@
             <ColumnDefinition Width="29*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Horizontal" Height="35" VerticalAlignment="Top" Grid.ColumnSpan="2">
-            <Button Content="Administrar usuarios" Height="30" Name="AdmUsuario" Click="AdmUsuario_Click"/>
-            <Button Content="Administrar mesas" Height="30" Name="AdmMesas" Click="AdmMesas_Click"/>
-            <Button Content="Administrar insumos" Height="30" x:Name="AdmInsumos" Click="AdmInsumos_Click" Margin="0,2,0,3"/>
+            <Button Content="Usuarios" Height="30" Name="AdmUsuario" Click="AdmUsuario_Click" Margin="0,2,0,3" Width="55"/>
+            <Button Content="Mesas" Height="30" Name="AdmMesas" Click="AdmMesas_Click" Margin="0,2,0,3" Width="71"/>
+            <Button Content="Insumos" Height="30" x:Name="AdmInsumos" Click="AdmInsumos_Click" Margin="0,2,0,3" Width="79"/>
+            <Button Content="Recetas" Height="30" x:Name="AdmRecetas" Click="AdmRecetas_Click" Margin="0,2,0,3" Width="71"/>
+            <Button Content="Productos" Height="30" x:Name="AdmProductos" Click="AdmProductos_Click" Margin="0,2,0,3" Width="77"/>
         </StackPanel>
         <Frame x:Name="VistaAdm" Margin="0,35,0,0" Grid.ColumnSpan="2"></Frame>
     </Grid>

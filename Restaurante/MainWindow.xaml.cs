@@ -16,7 +16,6 @@ using System.Data.Objects;
 using System.Data;
 using System.Data.OracleClient;
 using System.Linq;
-
 namespace Restaurante
 {
     /// <summary>
@@ -48,7 +47,6 @@ namespace Restaurante
             //si la consulta devuelve 1 fila esto significa que los datos son correctos y podemos iniciar el loign
             if (dt.Rows.Count>0)
             {
-                login ="login exitoso";
                 //Estos if son para filtrar segun el tipo de usuario logeado al sistema y enviarlo a su vista correspondiente
                 if (dt.Rows[0]["id_tipo_usuario"].ToString().Equals("1"))
                 {
@@ -66,7 +64,11 @@ namespace Restaurante
                     Vista.Bodeguero bod = new Vista.Bodeguero();
                     bod.ShowDialog();
                 }
-            }else
+                user.Text = "";
+                password.Password = "";
+                login = "login exitoso";
+            }
+            else
             {
                 login = "credenciales erroneas";
                 MessageBox.Show(login);
