@@ -47,18 +47,35 @@ namespace Restaurante
             //si la consulta devuelve 1 fila esto significa que los datos son correctos y podemos iniciar el loign
             if (dt.Rows.Count>0)
             {
+                login = "login exitoso";
                 //Estos if son para filtrar segun el tipo de usuario logeado al sistema y enviarlo a su vista correspondiente
                 if (dt.Rows[0]["id_tipo_usuario"].ToString().Equals("1"))
                 {
                     MessageBox.Show(login);
                     Vista.Administrador adm = new Vista.Administrador();
                     adm.ShowDialog();
-                }else if (dt.Rows[0]["id_tipo_usuario"].ToString().Equals("4"))
+                }
+                else if (dt.Rows[0]["id_tipo_usuario"].ToString().Equals("2"))
+                {
+                    MessageBox.Show("Nada que ver por aqui! prueba intentando a ingresar a nuestro sitio web");
+                }
+                else if (dt.Rows[0]["id_tipo_usuario"].ToString().Equals("3"))
+                {
+                    MessageBox.Show(login);
+                    Vista.Finanzas fin = new Vista.Finanzas();
+                    fin.ShowDialog();
+                }
+                else if (dt.Rows[0]["id_tipo_usuario"].ToString().Equals("4"))
                 {
                     MessageBox.Show(login);
                     Vista.Cocinero coc = new Vista.Cocinero();
                     coc.ShowDialog();
-                }else if (dt.Rows[0]["id_tipo_usuario"].ToString().Equals("6"))
+                }
+                else if (dt.Rows[0]["id_tipo_usuario"].ToString().Equals("5"))
+                {
+                    MessageBox.Show("Nada que ver por aqui! prueba intentando a ingresar a nuestro sitio web");
+                }
+                else if (dt.Rows[0]["id_tipo_usuario"].ToString().Equals("6"))
                 {
                     MessageBox.Show(login);
                     Vista.Bodeguero bod = new Vista.Bodeguero();
@@ -66,7 +83,6 @@ namespace Restaurante
                 }
                 user.Text = "";
                 password.Password = "";
-                login = "login exitoso";
             }
             else
             {

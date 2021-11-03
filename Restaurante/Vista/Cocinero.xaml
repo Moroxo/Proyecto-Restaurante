@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="Cocinero" Height="450" Width="800">
     <Grid>
-        
+        <DataGrid HorizontalAlignment="Left" Height="245" VerticalAlignment="Top" Width="782" Name="dgOrdenes" IsReadOnly="True" Foreground="#FF412E80" FontSize="16" FontWeight="Bold"/>
+        <Button Content="Actualizar" HorizontalAlignment="Left" Margin="40,300,0,0" VerticalAlignment="Top" Width="75" Name="Actualizar" Click="Actualizar_Click"/>
+        <Button Content="Finalizar Pedido" HorizontalAlignment="Left" Name="Finalizar" Margin="455,300,0,0" VerticalAlignment="Top" Width="100" RenderTransformOrigin="0.2,0.75"  Click="Finalizar_Click"/>
+        <ComboBox HorizontalAlignment="Left" Margin="195,300,0,0" VerticalAlignment="Top" Width="205" Name="cbnropedido"/>
+
     </Grid>
 </Window>
