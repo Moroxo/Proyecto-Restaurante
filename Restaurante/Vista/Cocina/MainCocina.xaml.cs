@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.OracleClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,21 +13,17 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Data.EntityClient;
-using System.Data.Objects;
-using System.Data;
-using System.Data.OracleClient;
 
-namespace Restaurante.Vista
+namespace Restaurante.Vista.Cocina
 {
     /// <summary>
     /// Lógica de interacción para Cocinero.xaml
     /// </summary>
-    public partial class Cocinero : Window
+    public partial class MainCocina : Window
     {
         //String Conexion = "Data Source=localhost:1521/xe; password=123456; User id=RESTAURANT";
         OracleConnection cone = new OracleConnection("Data Source = localhost:1521 / xe; password=123456; User id = RESTAURANT;");
-        public Cocinero()
+        public MainCocina()
         {
             InitializeComponent();
             listardatos();
@@ -62,7 +60,7 @@ namespace Restaurante.Vista
         {
             int i = 1 + cbnropedido.SelectedIndex;
             //Se envia el numero de pedido a finalizar
-            String lector = "update detalle_pedido set estado_pedido = 'finalizado' where nro_pedido = "+ i;
+            String lector = "update detalle_pedido set estado_pedido = 'finalizado' where nro_pedido = " + i;
             cone.Open();
             OracleDataAdapter adaptador = new OracleDataAdapter(lector, cone);
             DataTable dt = new DataTable();
@@ -74,6 +72,12 @@ namespace Restaurante.Vista
         private void Actualizar_Click(object sender, RoutedEventArgs e)
         {
             listardatos();
+        }
+
+        private void CocReceta_click(object sender, RoutedEventArgs e)
+        {
+            Vista.Cocina.Cocina_Receta vcr = new Vista.Cocina.Cocina_Receta();
+            vcr.ShowDialog();
         }
     }
 }

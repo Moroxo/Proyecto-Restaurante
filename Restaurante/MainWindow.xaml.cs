@@ -68,7 +68,7 @@ namespace Restaurante
                 else if (dt.Rows[0]["id_tipo_usuario"].ToString().Equals("4"))
                 {
                     MessageBox.Show(login);
-                    Vista.Cocinero coc = new Vista.Cocinero();
+                    Vista.Cocina.MainCocina coc = new Vista.Cocina.MainCocina();
                     coc.ShowDialog();
                 }
                 else if (dt.Rows[0]["id_tipo_usuario"].ToString().Equals("5"))

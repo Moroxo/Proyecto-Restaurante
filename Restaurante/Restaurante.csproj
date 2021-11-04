@@ -119,8 +119,11 @@
     <Compile Include="Vista\Bodeguero.xaml.cs">
       <DependentUpon>Bodeguero.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Vista\Cocinero.xaml.cs">
-      <DependentUpon>Cocinero.xaml</DependentUpon>
+    <Compile Include="Vista\Cocina\Cocina-Receta.xaml.cs">
+      <DependentUpon>Cocina-Receta.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Cocina\MainCocina.xaml.cs">
+      <DependentUpon>MainCocina.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vista\Finanzas.xaml.cs">
       <DependentUpon>Finanzas.xaml</DependentUpon>
@@ -137,6 +140,10 @@
     <Compile Include="Vista\paginas-administrador\adm-usuario.xaml.cs">
       <DependentUpon>adm-usuario.xaml</DependentUpon>
     </Compile>
+    <Page Include="Style\Style.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Vista\Administrador.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -160,7 +167,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Vista\Cocinero.xaml">
+    <Page Include="Vista\Cocina\Cocina-Receta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vista\Cocina\MainCocina.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -255,5 +266,9 @@
       <LastGenOutput>Modelo.cs</LastGenOutput>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
