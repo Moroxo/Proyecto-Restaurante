@@ -11,7 +11,7 @@
         <DataGrid HorizontalAlignment="Left" Height="245" VerticalAlignment="Top" Width="782" Name="dgOrdenes" IsReadOnly="True" Foreground="#FF412E80" FontSize="16" FontWeight="Bold" Margin="0,32,0,0" Style="{DynamicResource dgStyle}"/>
         <Button Content="Actualizar" HorizontalAlignment="Left" Margin="40,300,0,0" VerticalAlignment="Top" Width="75" Name="Actualizar" Click="Actualizar_Click" Style="{DynamicResource btnstyle2}" Foreground="#FF19170A"/>
         <Button Content="Finalizar Pedido" HorizontalAlignment="Left" Name="Finalizar" Margin="455,300,0,0" VerticalAlignment="Top" Width="100" RenderTransformOrigin="0.2,0.75"  Click="Finalizar_Click" Style="{DynamicResource btnstyle2}" Foreground="#FF19170A"/>
-        <ComboBox HorizontalAlignment="Left" Margin="195,300,0,0" VerticalAlignment="Top" Width="205" Name="cbnropedido"/>
+        <ComboBox HorizontalAlignment="Left" Margin="195,300,0,0" VerticalAlignment="Top" Width="205" Name="cbnropedido" Style="{DynamicResource CbStyle}"/>
 
     </Grid>
 </Window>

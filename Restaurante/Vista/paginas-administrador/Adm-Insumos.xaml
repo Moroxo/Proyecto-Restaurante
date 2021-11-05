@@ -24,6 +24,12 @@
         <TextBox HorizontalAlignment="Left" Height="23" Margin="330,196,0,0" TextWrapping="Wrap" Text="" Name="txtStock" VerticalAlignment="Top" Width="120" Visibility="Hidden" Grid.Column="3"/>
         <Label Content="tipo de insumo" HorizontalAlignment="Left" Margin="485,22,0,0" VerticalAlignment="Top" Width="118" x:Name="lbltipo" Visibility="Hidden" Grid.Column="3"/>
         <ComboBox HorizontalAlignment="Left" Margin="485,80,0,0" VerticalAlignment="Top" Width="120" Name="cbtipo" Visibility="Hidden" Grid.Column="3">
+            <ComboBox.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                    <GradientStop Color="#FF5750F3" Offset="1"/>
+                </LinearGradientBrush>
+            </ComboBox.Background>
             <ComboBoxItem Name="_1" Content="Carnes Rojas" HorizontalAlignment="Left" Width="142" Foreground="White" Background="#FF5750F3"/>
             <ComboBoxItem Name="_2" Content="Carnes Blancas" HorizontalAlignment="Left" Width="142" Foreground="White" Background="#FF5750F3"/>
             <ComboBoxItem Name="_3" Content="Legumbres" HorizontalAlignment="Left" Width="142" Foreground="White" Background="#FF5750F3"/>

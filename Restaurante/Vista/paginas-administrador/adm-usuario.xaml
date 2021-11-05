@@ -23,7 +23,7 @@
         <Label Content="estado:" HorizontalAlignment="Left" Margin="387,193,0,0" VerticalAlignment="Top" Width="118" Name="lblestado" Visibility="Hidden"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="535,196,0,0" TextWrapping="Wrap" Text="" Name="txtEstado" VerticalAlignment="Top" Width="120" Visibility="Hidden"/>
         <Label Content="tipo de usuario" HorizontalAlignment="Left" Margin="690,22,0,0" VerticalAlignment="Top" Width="118" x:Name="lbltipo" Visibility="Hidden"/>
-        <ComboBox HorizontalAlignment="Left" Margin="690,80,0,0" VerticalAlignment="Top" Width="120" Name="cbtipo" Visibility="Hidden">
+        <ComboBox HorizontalAlignment="Left" Margin="690,80,0,0" VerticalAlignment="Top" Width="120" Name="cbtipo" Visibility="Hidden" Background="#FF5750F3">
             <ComboBoxItem Name="_1" Content="Administrador" HorizontalAlignment="Left" Width="142" Foreground="White" Background="#FF5750F3"/>
             <ComboBoxItem Name="_2" Content="Cliente" HorizontalAlignment="Left" Width="142" Foreground="White" Background="#FF5750F3"/>
             <ComboBoxItem Name="_3" Content="Finanzas" HorizontalAlignment="Left" Width="142" Foreground="White" Background="#FF5750F3"/>

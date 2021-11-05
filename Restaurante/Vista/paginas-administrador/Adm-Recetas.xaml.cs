@@ -23,13 +23,15 @@ namespace Restaurante.Vista.paginas_administrador
     /// </summary>
     public partial class Adm_Recetas : Page
     {
-        String Conexion = "Data Source=localhost:1521/xe; password=123456; User id=RESTAURANT";
-        OracleConnection cone = new OracleConnection();
-        EntitiesRestaurant db = new EntitiesRestaurant();
+
         public Adm_Recetas()
         {
             InitializeComponent();
         }
+
+        String Conexion = "Data Source=localhost:1521/xe; password=123456; User id=RESTAURANT";
+        OracleConnection cone = new OracleConnection();
+        string filename = "";
         //Esta funcion sirve para mostrar los controles necesarios para crear un nuevo insumo siendo administrador, solo cuando se desee crearlo
         private void mostrarCrear()
         {
@@ -97,29 +99,82 @@ namespace Restaurante.Vista.paginas_administrador
         }
         private void confEliminar_Click(object sender, RoutedEventArgs e)
         {
-
+            if (eliminartxt.Text != "")
+            {
+                //Se abre la conexion
+                cone.ConnectionString = Conexion;
+                cone.Open();
+                //Se envia el nombre del insumo a eliminar
+                String lector = "delete from plato where nom_plato ='" + eliminartxt.Text + "'";
+                OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
+                DataTable dt = new DataTable();
+                adaptador.Fill(dt);
+                dgRecetas.ItemsSource = dt.AsDataView();
+                dgRecetas.Items.Refresh();
+                cone.Close();
+            }
+            else
+            {
+                MessageBox.Show("ingrese insumo a eliminar");
+            }
         }
         private void Crear_confirmacion_Click(object sender, RoutedEventArgs e)
         {
+            if (txtReceta.Text != "" && txtPrecio.Text != ""
+                && txtDescripcion.Text != "" && int.TryParse(txtPrecio.Text, out int result) == true)
+            {
 
+                cone.ConnectionString = Conexion;
+                cone.Open();
+                string id = "";
+                DataTable dt = new DataTable();
+                //insertamos el plato sin la imagen
+                String lector = "insert into plato(nom_plato, precio_plato, descripcion) values('" + txtReceta.Text + "', " + txtPrecio.Text + ", '" + txtDescripcion + "')";
+                OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
+                adaptador.Fill(dt);
+
+
+                //obtenemos la id del plato recien insertado(debido a que la id se ingresa automaticamente en la base de datos)
+                OracleCommand comando = new OracleCommand("select id_plato from plato where nom_plato = '" + txtReceta.Text + "'", cone);
+                OracleDataAdapter adaptador2 = new OracleDataAdapter();
+                OracleDataReader registro = comando.ExecuteReader();
+                while (registro.Read())
+                {
+                    id = registro["id_plato"].ToString();
+                }
+
+                //realizamos la insercion de la imagen mediante el plsql
+                OracleCommand plsql = new OracleCommand("cargar_imagen_plato", cone);
+                plsql.Parameters.Add("ins_id_plato", OracleType.Int32, 6).Value = int.Parse(id);
+                plsql.Parameters.Add("ins_filename", OracleType.VarChar, 15).Value = filename;
+                plsql.CommandType = System.Data.CommandType.StoredProcedure;
+                plsql.ExecuteNonQuery();
+                cone.Close();
+                registro.Close();
+                cone.Close();
+            }
+            else
+            {
+                if (int.TryParse(txtPrecio.Text, out int result2) == false)
+                    MessageBox.Show("Precio invalido, solo debe contener numeros");
+                else
+                    MessageBox.Show("Faltan campos por rellenar");
+            }
         }
 
         private void abririmagen_click(object sender, RoutedEventArgs e)
         {
-            /*
+            string filepath = "";
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
             bool? respuesta = openFileDialog.ShowDialog();
             openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             openFileDialog.Filter = "Image files (*.png;*.jpeg)|*.png;*.jpeg";
-            txtimg.Visibility = Visibility.Visible;
             if (respuesta == true)
             {
-                string filepath = openFileDialog.FileName;
+                filepath = openFileDialog.SafeFileName;
+
             }
-
-            */
-
+            filename = filepath;
         }
-
     }
 }

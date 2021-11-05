@@ -27,7 +27,6 @@ namespace Restaurante.Vista.paginas_administrador
     {
         String Conexion = "Data Source=localhost:1521/xe; password=123456; User id=RESTAURANT";
         OracleConnection cone = new OracleConnection();
-        EntitiesRestaurant db = new EntitiesRestaurant();
         public Adm_mesas()
         {
             InitializeComponent();

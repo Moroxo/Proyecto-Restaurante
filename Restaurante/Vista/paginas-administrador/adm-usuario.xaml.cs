@@ -27,7 +27,6 @@ namespace Restaurante.Vista.paginas_administrador
     {
         String Conexion = "Data Source=localhost:1521/xe; password=123456; User id=RESTAURANT";
         OracleConnection cone = new OracleConnection();
-        EntitiesRestaurant db = new EntitiesRestaurant();
         public adm_usuario()
         {
             InitializeComponent();
@@ -46,6 +45,19 @@ namespace Restaurante.Vista.paginas_administrador
             pwboxpassword.Visibility = Visibility.Visible;
             cbtipo.Visibility = Visibility.Visible;
             Crear_confirmacion.Visibility = Visibility.Visible;
+        }
+        //listar
+        private void listar()
+        {
+            cone.ConnectionString = Conexion;
+            cone.Open();
+            DataTable dt = new DataTable();
+            String lector = "select * from usuario";
+            OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
+            adaptador.Fill(dt);
+            dgUsuarios.ItemsSource = dt.AsDataView();
+            dgUsuarios.Items.Refresh();
+            cone.Close();
         }
         //Ocultamos los controles para crear un nuevo usuario en caso de no ser necesario su uso(al querer eliminar, listar o actualizar)
         private void ocultarCrear()
@@ -104,15 +116,7 @@ namespace Restaurante.Vista.paginas_administrador
         {
             ocultarCrear();
             ocultarEliminar();
-            cone.ConnectionString = Conexion;
-            cone.Open();
-            DataTable dt = new DataTable();
-            String lector = "select * from usuario";
-            OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
-            adaptador.Fill(dt);
-            dgUsuarios.ItemsSource = dt.AsDataView();
-            dgUsuarios.Items.Refresh();
-            cone.Close();
+            listar();
         }
         //Cuando el administrador desee eliminar un usuario apareceran los controles necesarios
         private void btnEliminar_Click(object sender, RoutedEventArgs e)
@@ -125,44 +129,48 @@ namespace Restaurante.Vista.paginas_administrador
         //El administrador confirma que desea eliminar y se realiza el proceso junto a la base de datos
         private void confirmar_Click(object sender, RoutedEventArgs e)
         {
-            //Se abre la conexion
-            cone.ConnectionString = Conexion;
-            cone.Open();
-            //Se envia el nombre del usuario a eliminar
-            String lector = "delete from usuario where nom_usuario ='" + eliminartxt.Text + "'";
-            OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
-            cone.Close();
-            //cerramos la conexion y abrimos otra  mostrando los datos que quedan en la bd
-            cone.Open();
-            DataTable dt = new DataTable();
-            String lector2 = "select * from usuario";
-            OracleDataAdapter adaptador2 = new OracleDataAdapter(lector2, Conexion);
-            adaptador.Fill(dt);
-            dgUsuarios.ItemsSource = dt.AsDataView();
-            dgUsuarios.Items.Refresh();
-            cone.Close();
+            if(eliminartxt.Text!="")
+            {
+                //Se abre la conexion
+                cone.ConnectionString = Conexion;
+                cone.Open();
+                //Se envia el nombre del usuario a eliminar
+                String lector = "delete from usuario where nom_usuario ='" + eliminartxt.Text + "'";
+                OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
+                DataTable dt = new DataTable();
+                adaptador.Fill(dt);
+                dgUsuarios.ItemsSource = dt.AsDataView();
+                dgUsuarios.Items.Refresh();
+                cone.Close();
+            }else
+            {
+                MessageBox.Show("Debe ingresar nombre de usuario a eliminar");
+            }
+
         }
         //El administrador confirma que desea crear y se realiza el proceso junto a la base de datos
         private void Crear_confirmacion_Click(object sender, RoutedEventArgs e)
         {
-            //llamamos a la funcion antes mencionada para obtener que tipo de insumo es y le asignamos un valor local
-            int tipo = tipo_usuario();
-            //Abrimos la conexion con la bd
-            cone.ConnectionString = Conexion;
-            cone.Open();
-            //Realizamos el insert con todos sus parametros necesarios
-            String lector = "insert into usuario (nom_usuario, password ,correo, estado, id_tipo_usuario) values ('" + txtnomusuario.Text + "','" + pwboxpassword.Password.ToString() + "','" + txtCorreo.Text + "', '" + txtEstado.Text + "'," + tipo + ")";
-            OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
-            cone.Close();
-            //Cerramos la conexion y abrimos otra para mostrar los datos en la base de datos
-            cone.Open();
-            DataTable dt = new DataTable();
-            String lector2 = "select * from usuario";
-            OracleDataAdapter adaptador2 = new OracleDataAdapter(lector2, Conexion);
-            adaptador.Fill(dt);
-            dgUsuarios.ItemsSource = dt.AsDataView();
-            dgUsuarios.Items.Refresh();
-            cone.Close();
+            if (txtnomusuario.Text != "" && pwboxpassword.Password.ToString() != "" && txtCorreo.Text != ""
+                && txtEstado.Text != "")
+            {
+                //llamamos a la funcion antes mencionada para obtener que tipo de insumo es y le asignamos un valor local
+                int tipo = tipo_usuario();
+                //Abrimos la conexion con la bd
+                cone.ConnectionString = Conexion;
+                cone.Open();
+                //Realizamos el insert con todos sus parametros necesarios
+                String lector = "insert into usuario (nom_usuario, password ,correo, estado, id_tipo_usuario) values ('" + txtnomusuario.Text + "','" + pwboxpassword.Password.ToString() + "','" + txtCorreo.Text + "', '" + txtEstado.Text + "'," + tipo + ")";
+                OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
+                DataTable dt = new DataTable();
+                adaptador.Fill(dt);
+                dgUsuarios.ItemsSource = dt.AsDataView();
+                dgUsuarios.Items.Refresh();
+                cone.Close();
+            }else
+            {
+                MessageBox.Show("faltan campos por rellenar");
+            }
         }
     }
 }

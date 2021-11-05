@@ -25,7 +25,6 @@ namespace Restaurante.Vista.paginas_administrador
         //abrimos la conexion nuevamente
         String Conexion = "Data Source=localhost:1521/xe; password=123456; User id=RESTAURANT";
         OracleConnection cone = new OracleConnection();
-        EntitiesRestaurant db = new EntitiesRestaurant();
         public Adm_Insumos()
         {
             InitializeComponent();
@@ -123,45 +122,53 @@ namespace Restaurante.Vista.paginas_administrador
         //El administrador confirma que desea eliminar y se realiza el proceso junto a la base de datos
         private void confirmar_Click(object sender, RoutedEventArgs e)
         {
-            //Se abre la conexion
-            cone.ConnectionString = Conexion;
-            cone.Open();
-            //Se envia el nombre del insumo a eliminar
-            String lector = "delete from insumos where nom_insumo ='" + eliminartxt.Text + "'";
-            OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
-            cone.Close();
-            //cerramos la conexion y abrimos otra mostrando los datos que quedan en la bd
-            cone.Open();
-            DataTable dt = new DataTable();
-            String lector2 = "select * from insumos";
-            OracleDataAdapter adaptador2 = new OracleDataAdapter(lector2, Conexion);
-            adaptador.Fill(dt);
-            dgInsumos.ItemsSource = dt.AsDataView();
-            dgInsumos.Items.Refresh();
-            cone.Close();
+            if (eliminartxt.Text != "")
+            {
+                //Se abre la conexion
+                cone.ConnectionString = Conexion;
+                cone.Open();
+                //Se envia el nombre del insumo a eliminar
+                String lector = "delete from insumos where nom_insumo ='" + eliminartxt.Text + "'";
+                OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
+                DataTable dt = new DataTable();
+                adaptador.Fill(dt);
+                dgInsumos.ItemsSource = dt.AsDataView();
+                dgInsumos.Items.Refresh();
+                cone.Close();
+            }else
+            {
+                MessageBox.Show("ingrese insumo a eliminar");
+            }
         }
         //El administrador confirma que desea crear y se realiza el proceso junto a la base de datos
         private void Crear_confirmacion_Click(object sender, RoutedEventArgs e)
         {
-            //llamamos a la funcion antes mencionada para obtener que tipo de insumo es y le asignamos un valor local
-            int tipo = tipo_Insumo();
-            //Abrimos la conexion con la bd
-            cone.ConnectionString = Conexion;
-            cone.Open();
-            //Realizamos el insert con todos sus parametros necesarios
-            String lector = "insert into insumos (nom_insumo, precio_unitario, descripcion, stock, id_tipoinsumo) values ('" + txtinsumos.Text + "'," + txtPrecio.Text + ",'" + txtDescripcion.Text + "', " + txtStock.Text + "," + tipo + ")";
-            OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
-            MessageBox.Show("Insert Ingresado correctamente");
-            cone.Close();
-            //Cerramos la conexion y abrimos otra para mostrar los datos en la base de datos
-            cone.Open();
-            DataTable dt = new DataTable();
-            String lector2 = "select * from usuario";
-            OracleDataAdapter adaptador2 = new OracleDataAdapter(lector2, Conexion);
-            adaptador.Fill(dt);
-            dgInsumos.ItemsSource = dt.AsDataView();
-            dgInsumos.Items.Refresh();
-            cone.Close();
+            if (txtinsumos.Text != "" && txtPrecio.Text != "" && txtDescripcion.Text != "" && txtStock.Text != ""
+                && int.TryParse(txtPrecio.Text, out int result) == true
+                && int.TryParse(txtStock.Text, out int result2) == true)
+            {
+                //llamamos a la funcion antes mencionada para obtener que tipo de insumo es y le asignamos un valor local
+                int tipo = tipo_Insumo();
+                //Abrimos la conexion con la bd
+                cone.ConnectionString = Conexion;
+                cone.Open();
+                //Realizamos el insert con todos sus parametros necesarios
+                String lector = "insert into insumos (nom_insumo, precio_unitario, descripcion, stock, id_tipoinsumo) values ('" + txtinsumos.Text + "'," + txtPrecio.Text + ",'" + txtDescripcion.Text + "', " + txtStock.Text + "," + tipo + ")";
+                OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
+                DataTable dt = new DataTable();
+                adaptador.Fill(dt);
+                dgInsumos.ItemsSource = dt.AsDataView();
+                dgInsumos.Items.Refresh();
+                cone.Close();
+                MessageBox.Show("Ingreso correcto");
+            }else
+            {
+                if (int.TryParse(txtPrecio.Text, out int result3) == true ||
+                    int.TryParse(txtStock.Text, out int result4) == true)
+                    MessageBox.Show("Stock o precio invalido, solo debe ingresar numeros");
+                else
+                    MessageBox.Show("faltan campos por rellenar");
+            }
         }
     }
 }
