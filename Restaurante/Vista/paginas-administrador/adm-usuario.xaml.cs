@@ -63,10 +63,11 @@ namespace Restaurante.Vista.paginas_administrador
             OracleCommand cmd = new OracleCommand("SP_LISTAR_USUARIOS", cone);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add("registros", OracleType.Cursor).Direction = ParameterDirection.Output;
-
+            cmd.ExecuteNonQuery();
+            
             OracleDataAdapter adaptador = new OracleDataAdapter();
             adaptador.SelectCommand = cmd;
-
+            
             DataTable dt = new DataTable();
             adaptador.Fill(dt);
             dgUsuarios.ItemsSource = dt.AsDataView();
@@ -163,6 +164,7 @@ namespace Restaurante.Vista.paginas_administrador
                 OracleCommand cmd = new OracleCommand("SP_DESCACTIVAR_USUARIO", cone);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("nombre", OracleType.Char).Value = eliminartxt.Text;
+                cmd.ExecuteNonQuery();
                 cone.Close();
                 listar();
                 MessageBox.Show("usuario desactivado");
