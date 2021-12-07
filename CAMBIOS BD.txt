@@ -1,0 +1,139 @@
+alter table EMPLEADO
+ADD ID_UASUARIO NUMBER(20) ;
+
+alter table EMPLEADO
+ADD AP_PATERNO VARCHAR2(20) NOT NULL;
+
+--------------------------------------------------------------------------
+
+create or replace NONEDITIONABLE PROCEDURE SP_CREAR_EMPLEADO( p_correo IN VARCHAR2,p_estado IN VARCHAR2,p_rut_empleado IN VARCHAR2, p_nombre IN VARCHAR2,p_ap in varchar2, p_tipo_usuario IN INTEGER)
+AS
+BEGIN
+
+ INSERT INTO EMPLEADO (id_empleado, rut_empleado, nombre,ap_paterno, id_usuario)
+        VALUES (SEC_EMPLEADO.NEXTVAL, p_rut_empleado, p_nombre, p_ap ,SEC_USUARIO.nextval);
+
+    INSERT INTO USUARIO (id_usuario, nom_usuario, contraseña, correo, estado, id_tipo_usuario)
+        VALUES (SEC_USUARIO.currval, (select  substr(nombre,1,4) || '.' || AP_PATERNO  from empleado where id_usuario= (select max(id_usuario)from empleado)), 
+        (select  substr(rut_empleado,-4)  from empleado where id_usuario= (select max(id_usuario)from empleado)), p_correo, p_estado, p_tipo_usuario);
+
+END;
+
+--exec SP_CREAR_EMPLEADO('S@G.CL','activo','1234','fran','cuevas',5);
+---------------------------------------------------------------------------
+create or replace procedure SP_CREAR_RECETA(
+p_nombre in varchar2,p_imagen in blob,
+p_precio in number,p_descripcion in varchar2)
+is
+begin 
+insert into plato values (sec_plato.nextval,p_nombre,p_imagen,p_precio,p_descripcion,SEC_INSUMOS.currval);
+
+end;
+--------------------------------------------------------------------------
+
+create or replace procedure SP_LISTAR_USUARIOS(registros out sys_refcursor)
+IS
+
+BEGIN
+ open registros for select * from usuario where estado = 'activo';
+
+END;
+--------------------------------------------------------------------------
+-- debemos vaciar la tabla para implementar la modificacion del largo del campo estado
+-- ya que la palabra "desactivar" no calzaba
+
+truncate table empleado;
+truncate table usuario;
+
+-- modificacion del largo del campo estado
+alter table usuario 
+MODIFY estado varchar2(15) ;
+
+-- ingresamos usuario admin para poder entrar al sistema
+--exec SP_CREAR_EMPLEADO('S@G.CL','activo','203829078','sebastian','sanchez',1);
+
+--------------------------------------------------------------------------
+
+create or replace NONEDITIONABLE procedure SP_DESCACTIVAR_USUARIO (nombre in varchar2)
+is
+begin
+    update usuario set estado='desactivado' where nom_usuario = nombre;
+
+end;
+
+
+----------------------------------------------------------
+create or replace procedure SP_LISTAR_INSUMOS(registros out sys_refcursor)
+IS
+
+BEGIN
+ open registros for select id_insumo,nom_insumo,descripcion, t.tipo_insumo 
+ from insumos I 
+ JOIN tipo_insumo t on i.id_tipoinsumo = t.id_tipoinsumo;
+
+END;
+
+
+----------------------------------------------------------
+
+--******REVISAR**********************************************
+create or replace procedure SP_INGRESAR_INSUMO(p_nom_insumo in VARCHAR2, p_descripcion in varchar2,p_tipo in number)
+IS
+
+BEGIN
+insert into insumos values (sec_insumos.nextval,p_nom_insumo,p_descripcion, p_tipo);
+
+END;
+----------------------------------------------------------
+
+create or replace procedure SP_ELIMINAR_INSUMO(p_nom_insumo in VARCHAR2)
+IS
+
+BEGIN
+DELETE FROM insumos WHERE nom_insumo= p_nom_insumo ;
+
+END;
+----------------------------------------------------------
+create or replace  procedure SP_LISTAR_PLATO(registros out sys_refcursor)
+IS
+
+BEGIN
+ open registros for select * from plato ;
+
+END;
+----------------------------------------------------------
+create or replace procedure SP_ELIMINAR_RECETA(p_nombre in VARCHAR2)
+IS
+
+BEGIN
+DELETE FROM plato WHERE nom_plato = p_nombre ;
+
+END;
+
+
+----------------------------------------------------------
+create or replace NONEDITIONABLE procedure SP_CREAR_RECETA(
+p_nombre in varchar2,p_imagen in blob,
+p_precio in number,p_descripcion in varchar2)
+is
+begin 
+insert into plato values (sec_plato.nextval,p_nombre,p_imagen,p_precio,p_descripcion,1);
+
+end;
+
+--********** CAMBIE A NULOS EL ID DE INSUMO,PDT: DEVOLVER CAMPO A NOT NULL ****************
+create or replace NONEDITIONABLE procedure SP_ESTADO_MESA_OCU ( numero in NUMBER)
+is
+begin
+
+update  MESA set estado = 'OCUPADO' where nro_mesa = numero;
+
+end;
+----------------------------------------------------------------------------------------------
+create or replace NONEDITIONABLE procedure SP_ESTADO_MESA_DESOCU ( numero in NUMBER)
+is
+begin
+
+update  MESA set estado = 'DISPONIBLE' where nro_mesa = numero;
+
+end;
