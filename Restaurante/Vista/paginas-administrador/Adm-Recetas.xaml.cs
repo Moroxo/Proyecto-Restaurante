@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OracleClient;
@@ -16,6 +17,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Drawing;
+using System.IO;
+
 namespace Restaurante.Vista.paginas_administrador
 {
     /// <summary>
@@ -29,7 +33,7 @@ namespace Restaurante.Vista.paginas_administrador
             InitializeComponent();
         }
 
-        String Conexion = "Data Source=localhost:1521/xe; password=123456; User id=RESTAURANT";
+        String Conexion = "Data Source=localhost:1521/orcl; password=rest; User id=restaurante";
         OracleConnection cone = new OracleConnection();
         string filename = "";
         //Esta funcion sirve para mostrar los controles necesarios para crear un nuevo insumo siendo administrador, solo cuando se desee crearlo
@@ -71,6 +75,26 @@ namespace Restaurante.Vista.paginas_administrador
             eliminartxt.Visibility = Visibility.Hidden;
             confirmar.Visibility = Visibility.Hidden;
         }
+
+        public  void Listar()
+        {
+            cone.ConnectionString = Conexion;
+            cone.Open();
+
+            OracleCommand cmd = new OracleCommand("SP_LISTAR_PLATO", cone);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("registros", OracleType.Cursor).Direction = ParameterDirection.Output;
+       
+            OracleDataAdapter adaptador = new OracleDataAdapter();
+            adaptador.SelectCommand = cmd;
+
+            DataTable dt = new DataTable();
+            adaptador.Fill(dt);
+            dgRecetas.ItemsSource = dt.AsDataView();
+            dgRecetas.Items.Refresh();
+
+            cone.Close();
+        }
         private void btnCrear_Click(object sender, RoutedEventArgs e)
         {
             mostrarCrear();
@@ -81,15 +105,7 @@ namespace Restaurante.Vista.paginas_administrador
         {
             ocultarCrear();
             ocultarEliminar();
-            cone.ConnectionString = Conexion;
-            cone.Open();
-            DataTable dt = new DataTable();
-            String lector = "select * from plato";
-            OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
-            adaptador.Fill(dt);
-            dgRecetas.ItemsSource = dt.AsDataView();
-            dgRecetas.Items.Refresh();
-            cone.Close();
+            Listar();
         }
 
         private void btnEliminar_Click(object sender, RoutedEventArgs e)
@@ -105,53 +121,101 @@ namespace Restaurante.Vista.paginas_administrador
                 cone.ConnectionString = Conexion;
                 cone.Open();
                 //Se envia el nombre del insumo a eliminar
-                String lector = "delete from plato where nom_plato ='" + eliminartxt.Text + "'";
-                OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
-                DataTable dt = new DataTable();
-                adaptador.Fill(dt);
-                dgRecetas.ItemsSource = dt.AsDataView();
-                dgRecetas.Items.Refresh();
+
+                OracleCommand cmd = new OracleCommand("SP_ELIMINAR_RECETA", cone);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("p_nombre", OracleType.Char).Value = eliminartxt.Text;
+                cmd.ExecuteNonQuery();
+
                 cone.Close();
+                MessageBox.Show("receta eliminada");
+                Listar();
             }
             else
             {
                 MessageBox.Show("ingrese insumo a eliminar");
             }
         }
+
+
+        private void abririmagen_click(object sender, RoutedEventArgs e)
+        {
+
+            //se crea eñ objeto OpenFileDialog, el cual permite buscar la imagen en nuestro ordenador
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            // Se muestra al usuario esperando una acción
+            bool? respuesta = openFileDialog.ShowDialog();
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+
+            //tipo de extenciones de archivos habilitados para esta acción
+            openFileDialog.Filter = "Image files (*.png;*.jpeg)|*.png;*.jpeg";
+
+
+            if (respuesta == true)
+            {
+               
+                Uri fileUri = new Uri(openFileDialog.FileName);
+                imagen.Source = new BitmapImage(fileUri);
+
+            }
+
+        }
+
+        //convertimos a un arreglo tipo bytes la imagen
+        public static byte[] converterDemo(System.Drawing.Image  x)
+        {
+            ImageConverter _imageConverter = new ImageConverter();
+            byte[] xByte = (byte[])_imageConverter.ConvertTo(x, typeof(byte[]));
+            return xByte;
+        }
+
         private void Crear_confirmacion_Click(object sender, RoutedEventArgs e)
         {
             if (txtReceta.Text != "" && txtPrecio.Text != ""
                 && txtDescripcion.Text != "" && int.TryParse(txtPrecio.Text, out int result) == true)
             {
 
+
                 cone.ConnectionString = Conexion;
-                cone.Open();
-                string id = "";
-                DataTable dt = new DataTable();
-                //insertamos el plato sin la imagen
-                String lector = "insert into plato(nom_plato, precio_plato, descripcion) values('" + txtReceta.Text + "', " + txtPrecio.Text + ", '" + txtDescripcion + "')";
-                OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion);
-                adaptador.Fill(dt);
+               
 
 
-                //obtenemos la id del plato recien insertado(debido a que la id se ingresa automaticamente en la base de datos)
-                OracleCommand comando = new OracleCommand("select id_plato from plato where nom_plato = '" + txtReceta.Text + "'", cone);
-                OracleDataAdapter adaptador2 = new OracleDataAdapter();
-                OracleDataReader registro = comando.ExecuteReader();
-                while (registro.Read())
+                byte[] arr;
+                using (MemoryStream ms = new MemoryStream())
                 {
-                    id = registro["id_plato"].ToString();
+                    var bmp = imagen.Source as BitmapImage;
+                    JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bmp));
+                    encoder.Save(ms);
+                    arr = ms.ToArray();
                 }
 
-                //realizamos la insercion de la imagen mediante el plsql
-                OracleCommand plsql = new OracleCommand("cargar_imagen_plato", cone);
-                plsql.Parameters.Add("ins_id_plato", OracleType.Int32, 6).Value = int.Parse(id);
-                plsql.Parameters.Add("ins_filename", OracleType.VarChar, 15).Value = filename;
-                plsql.CommandType = System.Data.CommandType.StoredProcedure;
-                plsql.ExecuteNonQuery();
+                OracleCommand cmd = new OracleCommand("SP_CREAR_RECETA", cone);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("p_nombre", OracleType.Char).Value = txtReceta.Text;
+                //******************IMAGEN*******************
+                cmd.Parameters.Add("p_imagen", OracleType.Blob).Value = arr;
+                //******************IMAGEN*******************
+                cmd.Parameters.Add("p_precio", OracleType.Number).Value = txtPrecio.Text;
+                cmd.Parameters.Add("p_descripcion", OracleType.Char).Value = txtDescripcion.Text ;
+
+
+                cone.Open();
+                cmd.ExecuteNonQuery();
                 cone.Close();
-                registro.Close();
-                cone.Close();
+                /*
+                //    *****************ESTO ESTA MAL**************************
+                DataTable dt = new DataTable();
+                //insertamos el plato sin la imagen
+                String lector = "insert into plato(nom_plato, precio_plato, descripcion) values(" + txtReceta.Text + "', " + txtPrecio.Text + ", '" + txtDescripcion.Text + "')";
+                OracleDataAdapter adaptador = new OracleDataAdapter(lector, Conexion); 
+                //  ************ AQUI TERMINA LO REALMENTE MALO**********************/
+
+                //obtenemos la id del plato recien insertado(debido a que la id se ingresa automaticamente en la base de datos)
+
             }
             else
             {
@@ -162,19 +226,6 @@ namespace Restaurante.Vista.paginas_administrador
             }
         }
 
-        private void abririmagen_click(object sender, RoutedEventArgs e)
-        {
-            string filepath = "";
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            bool? respuesta = openFileDialog.ShowDialog();
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            openFileDialog.Filter = "Image files (*.png;*.jpeg)|*.png;*.jpeg";
-            if (respuesta == true)
-            {
-                filepath = openFileDialog.SafeFileName;
-
-            }
-            filename = filepath;
-        }
+       
     }
 }

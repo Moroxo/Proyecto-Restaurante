@@ -8,23 +8,24 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Adm_Recetas">
 
-    <Grid>
+    <Grid Background="#FFFDF7F7">
         <Button Content="Crear" HorizontalAlignment="Left" Margin="15,40,0,0" VerticalAlignment="Top" Width="75" Name="btnCrear" Click="btnCrear_Click" Grid.Column="2" Style="{DynamicResource btnstyle2}" Foreground="#FF19170A"/>
         <Button Content="Listar" HorizontalAlignment="Left" Margin="15,90,0,0" VerticalAlignment="Top" Width="75" Name="btnListar" Click="btnListar_Click" Grid.Column="2" Style="{DynamicResource btnstyle2}" Foreground="#FF19170A"/>
         <Button Content="Eliminar" HorizontalAlignment="Left" Margin="15,133,0,0" VerticalAlignment="Top" Width="75" Name="btnEliminar" Click="btnEliminar_Click" RenderTransformOrigin="0.333,1.25" Grid.Column="2" Style="{DynamicResource btnstyle2}" Foreground="#FF19170A"/>
         <DataGrid HorizontalAlignment="Left" Height="210" Margin="0,265,0,0" VerticalAlignment="Top" Width="910" Name="dgRecetas" IsReadOnly="True" Grid.ColumnSpan="4"/>
         <TextBox HorizontalAlignment="Left" Name="eliminartxt" Height="35" Margin="145,145,0,0" TextWrapping="Wrap" Text="nombre de receta a eliminar"  VerticalAlignment="Top" Width="135"  Visibility="Hidden" Grid.Column="2" Grid.ColumnSpan="2"/>
         <Button Content="Confirmar" HorizontalAlignment="Left" Margin="145,210,0,0" VerticalAlignment="Top" Name="confirmar" Visibility="Hidden" Width="120" Click="confEliminar_Click" Grid.Column="2" Grid.ColumnSpan="2" Style="{DynamicResource btnstyle2}" Foreground="#FF19170A"/>
-        <Label Content="nombre de receta:" HorizontalAlignment="Left" Margin="182,22,0,0" VerticalAlignment="Top" Width="118" Name="lblreceta"  Visibility="Hidden" Grid.Column="3"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="330,25,0,0" TextWrapping="Wrap" Text="" Name="txtReceta" Visibility="Hidden" VerticalAlignment="Top" Width="120" Grid.Column="3"/>
-        <Label Content="Precio" HorizontalAlignment="Left" Margin="182,72,0,0" VerticalAlignment="Top" Width="118" Name="lblprecio" Visibility="Hidden" Grid.Column="3"/>
-        <TextBox HorizontalAlignment="Left" Margin="330,80,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0,-0.278" Text="" Name="txtPrecio" Visibility="Hidden" Grid.Column="3"/>
-        <Label Content="Descripcion" HorizontalAlignment="Left" Margin="500,22,0,0" VerticalAlignment="Top" Width="118" Visibility="Hidden" Name="lblDescripcion"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="623,25,0,0" TextWrapping="Wrap" Text="" Name="txtDescripcion" Visibility="Hidden" VerticalAlignment="Top" Width="120"/>
-        <Label Content="Imagen Receta" HorizontalAlignment="Left" Margin="500,112,0,0" VerticalAlignment="Top" Width="118" Visibility="Hidden" Name="lblImagen"/>
-        <Button Content="subir" HorizontalAlignment="Left" Margin="623,115,0,0" VerticalAlignment="Top" Width="95" RenderTransformOrigin="0.067,-0.5" Click="abririmagen_click" Name="abririmagen" Visibility="Hidden" Style="{DynamicResource btnstyle2}" Foreground="#FF19170A"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="623,130,0,0" TextWrapping="Wrap" Text="" Name="txtimg" Visibility="Hidden" VerticalAlignment="Top" Width="95"/>
-        <Button Content="confirmar" HorizontalAlignment="Left" Margin="515,193,0,0" VerticalAlignment="Top" Width="75" Name="Crear_confirmacion" Visibility="Hidden" Click="Crear_confirmacion_Click" Grid.Column="3" Style="{DynamicResource btnstyle2}" Foreground="#FF19170A"/>
+        <Label Content="nombre de receta:" HorizontalAlignment="Left" Margin="182,22,0,0" VerticalAlignment="Top" Width="118" Name="lblreceta"  Grid.Column="3"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="330,25,0,0" TextWrapping="Wrap" Text="" Name="txtReceta"  VerticalAlignment="Top" Width="120" Grid.Column="3"/>
+        <Label Content="Precio" HorizontalAlignment="Left" Margin="182,72,0,0" VerticalAlignment="Top" Width="118" Name="lblprecio"  Grid.Column="3"/>
+        <TextBox HorizontalAlignment="Left" Margin="330,80,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0,-0.278" Text="" Name="txtPrecio"  Grid.Column="3"/>
+        <Label Content="Descripcion" HorizontalAlignment="Left" Margin="500,22,0,0" VerticalAlignment="Top" Width="118"  Name="lblDescripcion"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="623,25,0,0" TextWrapping="Wrap" Text="" Name="txtDescripcion"  VerticalAlignment="Top" Width="120"/>
+        <Label Content="Imagen Receta" HorizontalAlignment="Left" Margin="500,112,0,0" VerticalAlignment="Top" Width="118"  Name="lblImagen"/>
+        <Button Content="subir" HorizontalAlignment="Left" Margin="623,115,0,0" VerticalAlignment="Top" Width="95" RenderTransformOrigin="0.067,-0.5" Click="abririmagen_click" Name="abririmagen"  Style="{DynamicResource btnstyle2}" Foreground="#FF19170A"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="623,130,0,0" TextWrapping="Wrap" Text="" Name="txtimg"  VerticalAlignment="Top" Width="95" Visibility="Hidden"/>
+        <Button Content="confirmar" HorizontalAlignment="Left" Margin="375,195,0,0" VerticalAlignment="Top" Width="75" Name="Crear_confirmacion"  Click="Crear_confirmacion_Click" Style="{DynamicResource btnstyle2}" Foreground="#FF19170A"/>
+        <Image HorizontalAlignment="Left" Height="100" Margin="598,160,0,0" VerticalAlignment="Top" Width="100"  Name="imagen"  RenderTransformOrigin="-0.013,0.491"/>
 
 
     </Grid>
